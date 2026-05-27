@@ -338,6 +338,7 @@ function SpecialRateCard({
 // ─── Main Book Page ───────────────────────────────────────────────────────────
 export default function BookPage() {
   const [step, setStep] = useState(0);
+  const [preselectedNote, setPreselectedNote] = useState<string | null>(null);
   const [selectedRateId, setSelectedRateId] = useState<string | null>(null);
   const [showSpecial, setShowSpecial] = useState(false);
 
@@ -371,6 +372,17 @@ const HERO_VIDEO = "assets/attract_video.mp4";
 
   const selectedPrice =
     selected && selected.price !== "Custom" ? selected.price : "";
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const dest = params.get("destination");
+    const route = params.get("route");
+    if (dest) {
+      setPreselectedNote(`Added to charter: ${dest}`);
+    } else if (route) {
+      setPreselectedNote(`Selected route: ${route}`);
+    }
+  }, []);
 
   const handleProceedToDetails = () => {
     if (!selectedRateId) return;
@@ -515,6 +527,11 @@ const HERO_VIDEO = "assets/attract_video.mp4";
 
       {/* Main Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 py-10 md:py-14">
+        {preselectedNote && (
+          <div className="mb-4 p-3 rounded-lg bg-white/5 border border-white/8 text-sm text-white/80">
+            {preselectedNote}
+          </div>
+        )}
         <StepIndicator step={step} />
 
         <AnimatePresence mode="wait">
@@ -1040,14 +1057,14 @@ const HERO_VIDEO = "assets/attract_video.mp4";
                         className="flex items-center gap-2 text-sm text-white/45 hover:text-[#c9a227] transition-colors"
                       >
                         <Phone className="w-3.5 h-3.5 text-[#c9a227]/60" />{" "}
-                        Jake: 412-418-2968
+                        Capt. Jake: 412-418-2968
                       </a>
                       <a
                         href="tel:7276449653"
                         className="flex items-center gap-2 text-sm text-white/45 hover:text-[#c9a227] transition-colors"
                       >
                         <Phone className="w-3.5 h-3.5 text-[#c9a227]/60" />{" "}
-                        Bryon: 727-644-9653
+                        Manager Bryon: 727-644-9653
                       </a>
                     </div>
                   </div>
@@ -1059,7 +1076,7 @@ const HERO_VIDEO = "assets/attract_video.mp4";
                     <div className="flex items-start gap-2 text-xs text-white/40">
                       <MapPin className="w-3.5 h-3.5 text-[#c9a227]/60 mt-0.5 flex-shrink-0" />
                       <span>
-                        Maximo Marina, 3701 50 Ave S.
+                        <a href="https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL" target="_blank" rel="noopener noreferrer" className="hover:text-[#c9a227] transition-colors">Maximo Marina</a>, 3701 50 Ave S.
                         <br />
                         Saint Petersburg, FL
                       </span>

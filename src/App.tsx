@@ -13,6 +13,8 @@ import React, {
   useRef,
   useMemo,
   useCallback,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import {
   motion,
@@ -215,7 +217,7 @@ const EXPERIENCES: Experience[] = [
     ],
   },
   {
-    img: "assets/occasion6.png",
+    img: "assets/chief.webp",
     tag: "Kitchen",
     title: "Chef's Cooking Class",
     desc: "Join our award-winning chef for an immersive culinary experience on the water. Learn to prepare signature dishes while enjoying stunning ocean views.",
@@ -2461,7 +2463,7 @@ function Hero({
 }
 
 // ─── FIX 3: ExperiencesSection — removed openExp prop (component takes no props) ──
-function ExperiencesSection() {
+function ExperiencesSection({ openExp }: { openExp: Dispatch<SetStateAction<Experience | null>> }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeExp = EXPERIENCES[activeIndex];
 
@@ -2613,7 +2615,7 @@ function ExperiencesSection() {
               </p>
 
               <a
-                href="#destinations"
+                href="/book"
                 className="inline-flex items-center gap-2 mt-6 bg-gold text-[#04101f] px-6 py-3 rounded-full font-semibold text-sm transition-all hover:scale-105"
               >
                 Plan Your Experience
@@ -2981,8 +2983,8 @@ function CulinarySection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [direction, setDirection] = useState(0);
   const slides = [
-    { id: "chef", tag: "Master of the Galley", name: "Chef Cheryl", role: "Gulf Coast's Premier Yacht Chef", profileImg: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=200", titleLine1: "Where ", titleItalic: "Fine Dining", titleLine2: " Meets Home Comfort", description: "Looking for a personal chef for a party, work event, family dinner, or yacht excursion? Chef Cheryl brings the dream of fine dining to your charter table.", mainImgs: ["assets/cheryl_foods.jpeg", "assets/cheryl_foods1.jpeg", "assets/cheryl_foods2.jpeg"], icon: <Utensils className="w-4 h-4 text-gold" /> },
-    { id: "mixology", tag: "The Art of Mixology", name: "Nelly the Mixologist", role: "Expert Craft Cocktail Artist", profileImg: "https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&q=80&w=200", titleLine1: "Crafting Cocktails That ", titleItalic: "Spark Connection", titleLine2: "", description: "Mixology isn't just about pouring drinks—it's about creating an experience where every sip tells a story.", mainImgs: ["https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&q=80&w=500","https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=500","https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=600"], icon: <svg className="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M7.5,7L5.5,5H18.5L16.5,7M11,13V19H6V21H18V19H13V13L21,5V3H3V5L11,13Z" /></svg> },
+    { id: "chef", tag: "Master of the Galley", name: "Chef Cheryl", role: "Gulf Coast's Premier Yacht Chef", profileImg: "assets/cheryl.jpeg", titleLine1: "Where ", titleItalic: "Fine Dining", titleLine2: " Meets Home Comfort", description: "Looking for a personal chef for a party, work event, family dinner, or yacht excursion? Chef Cheryl brings the dream of fine dining to your charter table.", mainImgs: ["assets/cheryl_foods.jpeg", "assets/cheryl_foods1.jpeg", "assets/cheryl_foods2.jpeg"], icon: <Utensils className="w-4 h-4 text-gold" /> },
+    { id: "mixology", tag: "The Art of Mixology", name: "Nelly the Mixologist", role: "Expert Craft Cocktail Artist", profileImg: "assets/nelly.jpeg", titleLine1: "Crafting Cocktails That ", titleItalic: "Spark Connection", titleLine2: "", description: "Mixology isn't just about pouring drinks—it's about creating an experience where every sip tells a story.", mainImgs: ["https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&q=80&w=500","https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=500","https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=600"], icon: <svg className="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M7.5,7L5.5,5H18.5L16.5,7M11,13V19H6V21H18V19H13V13L21,5V3H3V5L11,13Z" /></svg> },
   ];
   const slideVariants = { enter: (d: number) => ({ x: d > 0 ? 1000 : -1000, opacity: 0 }), center: { zIndex: 1, x: 0, opacity: 1 }, exit: (d: number) => ({ zIndex: 0, x: d < 0 ? 1000 : -1000, opacity: 0 }) };
 
@@ -3127,7 +3129,7 @@ function DestinationsSection() {
                     style={{ borderColor: "rgba(201,162,39,0.35)", color: "#c9a227" }}>
                     <Phone className="w-4 h-4" /> Inquire About This Stop
                   </button>
-                  <a href="/book" onClick={() => setSelected(null)} className="gold-shimmer-btn flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm transition-all hover:translate-y-[-1px]"
+                  <a href={`/book?destination=${encodeURIComponent(selected.name)}`} onClick={() => setSelected(null)} className="gold-shimmer-btn flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm transition-all hover:translate-y-[-1px]"
                     style={{ background: "linear-gradient(135deg, #c9a227, #f0c040)", color: "#040d1a" }}>
                     Include in My Charter <ArrowUpRight className="w-4 h-4" />
                   </a>
@@ -3723,32 +3725,6 @@ function MechanicalSection() {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const POPULAR_DESTINATIONS_MINI = [
-  {
-    tag: "Nature & History",
-    name: "Egmont Key",
-    desc: "Shelling, sightseeing, and historic beauty.",
-    img: "assets/egmont_key.jpg",
-  },
-  {
-    tag: "Iconic Landmark",
-    name: "St. Pete Pier",
-    desc: "Perfect for dining and exploring after your cruise.",
-    img: "assets/IconicPier.jpg",
-  },
-  {
-    tag: "State Park",
-    name: "Honeymoon Island",
-    desc: "Romantic shoreline and nature preserve.",
-    img: "assets/Honeymoon_Island.jpg",
-  },
-  {
-    tag: "Dockside Dining",
-    name: "Salt Rock Grill",
-    desc: "Dockside dining paired with fine food, cocktails, and waterfront views.",
-    img: "assets/salta.webp",
-  },
-];
 
 const PRIVATE_EXP_DATA = [
   {
@@ -4000,90 +3976,6 @@ function PrivateDestinationsStrip() {
       }}
     >
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-10"
-        >
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="w-10 h-[1.5px] bg-gold" />
-            <span className="text-[10px] font-bold tracking-[3px] uppercase text-gold">
-              Popular Stops
-            </span>
-            <div className="w-10 h-[1.5px] bg-gold" />
-          </div>
-          <h3 className="text-2xl md:text-4xl font-serif mb-2">
-            Popular{" "}
-            <em className="text-gold italic font-serif">Destinations</em>
-          </h3>
-          <p className="text-white/40 text-sm max-w-lg mx-auto">
-            Discover Florida's most breathtaking waterfront destinations.
-          </p>
-        </motion.div>
-
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {POPULAR_DESTINATIONS_MINI.map((dest, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{
-                opacity: inView ? 1 : 0,
-                y: inView ? 0 : 24,
-              }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="group relative rounded-2xl overflow-hidden cursor-pointer"
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                transition: "border-color 0.3s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(201,162,39,0.35)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-              }}
-            >
-              {/* Image */}
-              <div className="relative overflow-hidden" style={{ height: 160 }}>
-                <img
-                  src={dest.img}
-                  alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
-                  style={{ transform: "scale(1)" }}
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(to bottom, transparent 50%, rgba(4,13,26,0.85) 100%)",
-                  }}
-                />
-                {/* Tag */}
-                <div
-                  className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest"
-                  style={{ background: "rgba(201,162,39,0.9)", color: "#040d1a" }}
-                >
-                  {dest.tag}
-                </div>
-              </div>
-
-              {/* Text */}
-              <div className="p-4">
-                <h4 className="font-serif text-base text-white mb-1.5 group-hover:text-gold transition-colors">
-                  {dest.name}
-                </h4>
-                <p className="text-xs text-white/45 leading-relaxed">
-                  {dest.desc}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
 
         {/* CTA strip */}
         <motion.div
@@ -4735,7 +4627,7 @@ function CorporateSection() {
             </motion.div>
 
             <a
-              href="/destinations"
+              href="#destinations"
               className="gold-shimmer-btn inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-navy font-bold rounded-xl text-sm shadow-lg shadow-gold/20"
             >
               Discover Our Destinations <ArrowUpRight className="w-4 h-4" />
@@ -4871,13 +4763,17 @@ function InquirySection({ addToast }: { addToast: (m: string, t: string, tp: str
             </motion.a>
           </div>
           <div className="space-y-4">
-            {[{ icon: Phone, text: "Call Jake: 412-418-2968" }, { icon: Phone, text: "Call Bryon: 727-644-9653" }, { icon: MapPin, text: "Saint Petersburg, FL" }].map((c, i) => (
-              <motion.div key={i} whileHover={{ x: 6 }} className="flex items-center gap-3 group">
+            {[
+              { icon: Phone, text: "Capt. Jake: 412-418-2968", href: "tg://user?phone=+14124182968" },
+              { icon: Phone, text: "Manager Bryon: 727-644-9653", href: "tg://user?phone=+17276449653" },
+              { icon: MapPin, text: "Saint Petersburg, FL", href: "https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL" }
+            ].map((c, i) => (
+              <motion.a key={i} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined} whileHover={{ x: 6 }} className="flex items-center gap-3 group cursor-pointer">
                 <div className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center group-hover:border-gold/50 transition-colors shrink-0">
                   <c.icon className="w-4 h-4 text-gold" />
                 </div>
                 <span className="text-white/70 font-medium group-hover:text-white transition-colors text-sm">{c.text}</span>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
         </div>
@@ -4962,8 +4858,8 @@ function Footer() {
           </div>
           {[
             { title: "Charter", links: [["Day Trip — $10,000", "/book"],["Weekend — $20,000", "/book"],["Full Week — $35,000", "/book"],["Corporate — $15,000", "/book"]] },
-            { title: "Contact", links: [["Jake: 412-418-2968"],["Bryon: 727-644-9653"],["Send Inquiry", "#contact"]] },
-            { title: "Location", links: [["Maximo Marina"],["3701 50 Ave S."],["St. Petersburg, FL"]] },
+            { title: "Contact", links: [["Capt. Jake: 412-418-2968", "tg://user?phone=+14124182968"],["Manager Bryon: 727-644-9653", "tg://user?phone=+17276449653"],["Send Inquiry", "#contact"]] },
+            { title: "Location", links: [["Maximo Marina", "https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL"],["3701 50 Ave S."],["St. Petersburg, FL"]] },
           ].map(({ title, links }) => (
             <div key={title}>
               <h4 className="font-serif text-base mb-4">{title}</h4>
@@ -4971,7 +4867,7 @@ function Footer() {
                 {links.map(([label, href], i) => (
                   <li key={i}>
                     {href ? (
-                      <motion.a href={href} whileHover={{ x: 4, color: "#c9a227" }} className="text-sm text-white/30 transition-all inline-block">{label}</motion.a>
+                      <motion.a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} whileHover={{ x: 4, color: "#c9a227" }} className="text-sm text-white/30 hover:text-[#c9a227] transition-all inline-block">{label}</motion.a>
                     ) : (
                       <motion.span whileHover={{ x: 4, color: "#c9a227" }} className="text-sm text-white/30 transition-all inline-block">{label}</motion.span>
                     )}
@@ -5222,6 +5118,7 @@ export default function App() {
         {isRouteOpen && (
           <Modal onClose={() => setIsRouteOpen(false)}>
             <div className="max-w-2xl w-full bg-navy-light rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl flex flex-col scrollbar-hide overflow-y-auto max-h-[95vh]">
+              <button onClick={() => setIsRouteOpen(false)} className="absolute top-4 right-4 z-20 p-2 text-white/30 hover:text-white transition-colors rounded-xl hover:bg-white/5"><X className="w-5 h-5" /></button>
               <div className="relative h-44 md:h-64 shrink-0 overflow-hidden">
                 <motion.img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1000"
                   className="w-full h-full object-cover" initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 0.8 }} alt="" />
@@ -5255,7 +5152,7 @@ export default function App() {
                 </div>
                 <div className="mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div><p className="text-[10px] text-white/30 uppercase tracking-widest mb-1">Duration</p><p className="text-gold text-lg">4 - 8 Hours</p></div>
-                  <motion.a href="/book" onClick={() => setIsRouteOpen(false)} whileHover={{ scale: 1.03, y: -1 }}
+                  <motion.a href={`/book?route=${encodeURIComponent("The Island Hopper")}`} onClick={() => setIsRouteOpen(false)} whileHover={{ scale: 1.03, y: -1 }}
                     className="gold-shimmer-btn w-full sm:w-auto px-8 py-4 bg-gold text-navy font-bold rounded-xl text-sm transition-all text-center">
                     Reserve This Route
                   </motion.a>
