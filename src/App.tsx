@@ -4733,11 +4733,23 @@ function InquirySection({ addToast }: { addToast: (m: string, t: string, tp: str
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    const subject = encodeURIComponent(`Charter Inquiry — ${eventType}`);
+    const body = encodeURIComponent(
+      `Name: ${firstName} ${lastName}\n` +
+      `Email: ${email}\n` +
+      `Charter Interest: ${eventType}\n\n` +
+      `Message:\n${message}`
+    );
+
+    const mailtoLink = `mailto:info@serendipityyachtcharter.com?subject=${subject}&body=${body}`;
+
     setTimeout(() => {
       setLoading(false);
-      addToast("We'll be in touch within 24 hours!", "Inquiry Sent!", "success");
+      window.location.href = mailtoLink;
+      addToast("Your email client has been opened!", "Inquiry Ready", "success");
       setFirstName(""); setLastName(""); setEmail(""); setMessage(""); setEventType("Day Trip");
-    }, 900);
+    }, 600);
   };
 
   const inputStyle = (name: string): React.CSSProperties => ({
@@ -4764,11 +4776,23 @@ function InquirySection({ addToast }: { addToast: (m: string, t: string, tp: str
           </div>
           <div className="space-y-4">
             {[
-              { icon: Phone, text: "Capt. Jake: 412-418-2968", href: "tg://user?phone=+14124182968" },
-              { icon: Phone, text: "Manager Bryon: 727-644-9653", href: "tg://user?phone=+17276449653" },
+              { icon: Phone, text: "Capt. Jake: 412-418-2968", href: "tel:+14124182968" },
+              { icon: Phone, text: "Manager Bryon: 727-644-9653", href: "tel:+17276449653" },
               { icon: MapPin, text: "Saint Petersburg, FL", href: "https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL" }
             ].map((c, i) => (
-              <motion.a key={i} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined} whileHover={{ x: 6 }} className="flex items-center gap-3 group cursor-pointer">
+              <motion.a
+                key={i}
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                onClick={
+                  c.href.startsWith("tel:")
+                    ? (e) => { e.preventDefault(); window.location.href = c.href; }
+                    : undefined
+                }
+                whileHover={{ x: 6 }}
+                className="flex items-center gap-3 group cursor-pointer"
+              >
                 <div className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center group-hover:border-gold/50 transition-colors shrink-0">
                   <c.icon className="w-4 h-4 text-gold" />
                 </div>
@@ -4833,7 +4857,6 @@ function InquirySection({ addToast }: { addToast: (m: string, t: string, tp: str
     </section>
   );
 }
-
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   return (
@@ -4858,8 +4881,8 @@ function Footer() {
           </div>
           {[
             { title: "Charter", links: [["Day Trip — $10,000", "/book"],["Weekend — $20,000", "/book"],["Full Week — $35,000", "/book"],["Corporate — $15,000", "/book"]] },
-            { title: "Contact", links: [["Capt. Jake: 412-418-2968", "tg://user?phone=+14124182968"],["Manager Bryon: 727-644-9653", "tg://user?phone=+17276449653"],["Send Inquiry", "#contact"]] },
-            { title: "Location", links: [["Maximo Marina", "https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL"],["3701 50 Ave S."],["St. Petersburg, FL"]] },
+            { title: "Contact", links: [["Capt. Jake: 412-418-2968", "tel:+14124182968"],["Manager Bryon: 727-644-9653", "tel:+17276449653"],["Send Inquiry", "#contact"]] },
+            { title: "Location", links: [["Maximo Marina", "https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL"],["3701 50 Ave S.", null],["St. Petersburg, FL", null]] },
           ].map(({ title, links }) => (
             <div key={title}>
               <h4 className="font-serif text-base mb-4">{title}</h4>
@@ -4867,7 +4890,20 @@ function Footer() {
                 {links.map(([label, href], i) => (
                   <li key={i}>
                     {href ? (
-                      <motion.a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} whileHover={{ x: 4, color: "#c9a227" }} className="text-sm text-white/30 hover:text-[#c9a227] transition-all inline-block">{label}</motion.a>
+                      <motion.a
+                        href={href}
+                        target={href.startsWith("http") ? "_blank" : undefined}
+                        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        onClick={
+                          href.startsWith("tel:")
+                            ? (e) => { e.preventDefault(); window.location.href = href; }
+                            : undefined
+                        }
+                        whileHover={{ x: 4, color: "#c9a227" }}
+                        className="text-sm text-white/30 hover:text-[#c9a227] transition-all inline-block"
+                      >
+                        {label}
+                      </motion.a>
                     ) : (
                       <motion.span whileHover={{ x: 4, color: "#c9a227" }} className="text-sm text-white/30 transition-all inline-block">{label}</motion.span>
                     )}
@@ -5105,15 +5141,24 @@ export default function App() {
             </div>
           </Modal>
         )}
-
-        {isVideoOpen && (
-          <Modal onClose={() => setIsVideoOpen(false)}>
-            <div className="w-[95vw] md:w-[80vw] lg:w-[70vw] aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl relative border border-white/10">
-              <iframe src="https://player.vimeo.com/video/778990092?autoplay=1&color=c9a227&title=0&byline=0&portrait=0"
-                className="w-full h-full" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
-            </div>
-          </Modal>
-        )}
+{isVideoOpen && (
+  <Modal onClose={() => setIsVideoOpen(false)}>
+    <div className="relative w-[95vw] md:w-[80vw] lg:w-[70vw] aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+      <button
+        onClick={() => setIsVideoOpen(false)}
+        className="absolute top-3 right-3 z-20 p-2 bg-black/60 backdrop-blur-sm text-white/60 hover:text-white hover:bg-black/80 transition-all rounded-xl border border-white/10"
+      >
+        <X className="w-5 h-5" />
+      </button>
+      <iframe
+        src="https://player.vimeo.com/video/778990092?autoplay=1&color=c9a227&title=0&byline=0&portrait=0"
+        className="w-full h-full"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  </Modal>
+)}
 
         {isRouteOpen && (
           <Modal onClose={() => setIsRouteOpen(false)}>
