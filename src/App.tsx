@@ -4171,7 +4171,6 @@ function PrivateDestinationsStrip() {
 // ─────────────────────────────────────────────────────────────────────────────
 // CORPORATE SECTION  (enhanced with intro text from Image 2 + new design)
 // ─────────────────────────────────────────────────────────────────────────────
-
 const CORP_USE_CASES_DATA = [
   "Impress clients",
   "Executive retreats",
@@ -4220,12 +4219,19 @@ const CORP_WHAT_TO_EXPECT = [
   },
 ];
 
-// Stats for the animated counter row
 const CORP_STATS = [
   { val: 94, suffix: " ft", label: "Yacht Length" },
   { val: 12, suffix: "", label: "Max Guests" },
   { val: 4, suffix: "", label: "Private Suites" },
   { val: 25, suffix: "+", label: "Charter Guests" },
+];
+
+const CORP_DESTINATIONS = [
+  "Downtown St. Pete Marina",
+  "Tampa Riverwalk and Harbour Island",
+  "Sarasota Bay and Longboat Key",
+  "Clearwater Intracoastal Waterway",
+  "Cruises under the Skyway Bridge and around Egmont Key for scenic views",
 ];
 
 function CorporateSection() {
@@ -4234,15 +4240,14 @@ function CorporateSection() {
   const venueRef = useRef<HTMLDivElement>(null);
   const usecaseRef = useRef<HTMLDivElement>(null);
   const expectRef = useRef<HTMLDivElement>(null);
+  const destRef = useRef<HTMLDivElement>(null);
 
   const headerInView = useInView(headerRef, { once: true, margin: "-60px" });
-  const introBannerInView = useInView(introBannerRef, {
-    once: true,
-    margin: "-60px",
-  });
+  const introBannerInView = useInView(introBannerRef, { once: true, margin: "-60px" });
   const venueInView = useInView(venueRef, { once: true, margin: "-60px" });
   const usecaseInView = useInView(usecaseRef, { once: true, margin: "-60px" });
   const expectInView = useInView(expectRef, { once: true, margin: "-60px" });
+  const destInView = useInView(destRef, { once: true, margin: "-60px" });
 
   const staggerC = {
     hidden: {},
@@ -4262,18 +4267,18 @@ function CorporateSection() {
 
   return (
     <section id="corporate" className="bg-navy">
+
       {/* ── Section Header ── */}
-     {/* ── Section Header ── */}
-<div
-  ref={headerRef}
-  className="pt-6 pb-4 px-4 md:px-8 lg:px-16"
-  style={{
-    background:
-      "linear-gradient(135deg, rgba(6,14,30,0.98) 0%, rgba(8,22,44,0.98) 100%)",
-    borderTop: "none",
-    borderBottom: "none",
-  }}
->
+      <div
+        ref={headerRef}
+        className="pt-6 pb-4 px-4 md:px-8 lg:px-16"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(6,14,30,0.98) 0%, rgba(8,22,44,0.98) 100%)",
+          borderTop: "none",
+          borderBottom: "none",
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 30 }}
@@ -4289,16 +4294,16 @@ function CorporateSection() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-  <h2 className="text-3xl md:text-5xl font-serif leading-tight">
-    Corporate &amp; Executive
-    <br />
-    <em className="text-gold italic font-serif">Experiences</em>
-  </h2>
-</div>
+            <h2 className="text-3xl md:text-5xl font-serif leading-tight">
+              Corporate &amp; Executive
+              <br />
+              <em className="text-gold italic font-serif">Experiences</em>
+            </h2>
+          </div>
         </motion.div>
       </div>
 
-      {/* ── Intro Banner (from Image 2) ── */}
+      {/* ── Intro Banner ── */}
       <div
         ref={introBannerRef}
         className="px-4 md:px-8 lg:px-16 py-10 md:py-14"
@@ -4310,7 +4315,6 @@ function CorporateSection() {
         }}
       >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left: rich description text */}
           <motion.div
             initial={{ opacity: 0, x: -36 }}
             animate={{
@@ -4352,7 +4356,6 @@ function CorporateSection() {
             </a>
           </motion.div>
 
-          {/* Right: animated stat pills */}
           <motion.div
             initial={{ opacity: 0, x: 36 }}
             animate={{
@@ -4379,9 +4382,7 @@ function CorporateSection() {
                   minHeight: 110,
                 }}
               >
-                <div
-                  className="absolute top-0 left-0 right-0 h-[2px] gold-accent-line"
-                />
+                <div className="absolute top-0 left-0 right-0 h-[2px] gold-accent-line" />
                 <span className="text-3xl text-gold font-bold mb-1">
                   <AnimatedCounter to={s.val} suffix={s.suffix} />
                 </span>
@@ -4391,7 +4392,6 @@ function CorporateSection() {
               </motion.div>
             ))}
 
-            {/* Location card spanning full width */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{
@@ -4481,14 +4481,10 @@ function CorporateSection() {
                     border: "1px solid rgba(255,255,255,0.07)",
                   }}
                 >
-                  <div
-                    className="w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center shrink-0 mt-0.5"
-                  >
+                  <div className="w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-3 h-3 text-gold" />
                   </div>
-                  <span className="text-sm text-white/65 leading-relaxed">
-                    {f}
-                  </span>
+                  <span className="text-sm text-white/65 leading-relaxed">{f}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -4656,17 +4652,125 @@ function CorporateSection() {
                 >
                   <item.icon className="w-5 h-5" style={{ color: item.color }} />
                 </div>
-                <h4 className="font-serif text-lg mb-2 leading-snug">
-                  {item.title}
-                </h4>
-                <p className="text-sm text-white/50 leading-relaxed">
-                  {item.desc}
-                </p>
+                <h4 className="font-serif text-lg mb-2 leading-snug">{item.title}</h4>
+                <p className="text-sm text-white/50 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* ── Destinations ── */}
+      <div
+        ref={destRef}
+        className="px-4 md:px-8 lg:px-16 py-10 md:py-16"
+        style={{
+          background: "#051126",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+        }}
+      >
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Left: text */}
+          <motion.div
+            initial={{ opacity: 0, x: -36 }}
+            animate={{
+              opacity: destInView ? 1 : 0,
+              x: destInView ? 0 : -36,
+            }}
+            transition={{ duration: 0.9 }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-px bg-gold" />
+              <span className="text-[10px] font-bold tracking-[3px] uppercase text-gold">
+                Destinations
+              </span>
+            </div>
+
+            <h3 className="text-3xl md:text-5xl font-serif mb-4 leading-tight">
+              Explore Prime Locations
+              <br />
+              in Tampa Bay
+            </h3>
+
+            <p className="text-white/55 text-sm leading-relaxed mb-6">
+              Serendipity is based in Saint Petersburg, with charters available
+              across the Gulf Coast. Common destinations include:
+            </p>
+
+            <motion.ul
+              variants={staggerC}
+              initial="hidden"
+              animate={destInView ? "show" : "hidden"}
+              className="flex flex-col gap-3 mb-8"
+            >
+              {CORP_DESTINATIONS.map((dest, i) => (
+                <motion.li
+                  key={i}
+                  variants={staggerI}
+                  className="flex items-start gap-3 text-sm text-white/65"
+                >
+                  <div className="w-2 h-2 rounded-full bg-gold shrink-0 mt-1.5" />
+                  {dest}
+                </motion.li>
+              ))}
+            </motion.ul>
+
+            {/* Italic callout box */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{
+                opacity: destInView ? 1 : 0,
+                y: destInView ? 0 : 16,
+              }}
+              transition={{ delay: 0.5, duration: 0.7 }}
+              className="p-4 rounded-xl mb-8 text-sm italic text-white/50 leading-relaxed"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+            >
+              Looking for a happy hour or post-cruise dinner? Add a stop at Salt
+              Rock Grill, Jackson's Bistro, or Marina Jack for a complete day of
+              business and hospitality.
+            </motion.div>
+
+            <a
+              href="/destinations"
+              className="gold-shimmer-btn inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-navy font-bold rounded-xl text-sm shadow-lg shadow-gold/20"
+            >
+              Discover Our Destinations <ArrowUpRight className="w-4 h-4" />
+            </a>
+          </motion.div>
+
+          {/* Right: image */}
+          <motion.div
+            initial={{ opacity: 0, x: 36 }}
+            animate={{
+              opacity: destInView ? 1 : 0,
+              x: destInView ? 0 : 36,
+            }}
+            transition={{ duration: 0.9, delay: 0.1 }}
+          >
+            <div className="relative rounded-3xl overflow-hidden border border-white/8 group">
+              <img
+                src="assets/venue2.webp"
+                alt="Group celebrating on yacht in Tampa Bay"
+                className="w-full object-cover group-hover:scale-105 transition-transform duration-700"
+                style={{ aspectRatio: "4/3" }}
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(4,13,26,0.35) 0%, transparent 60%)",
+                }}
+              />
+              <div className="gold-accent-line absolute bottom-0 left-0 right-0 h-[2px]" />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
     </section>
   );
 }
