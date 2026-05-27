@@ -4857,7 +4857,6 @@ function InquirySection({ addToast }: { addToast: (m: string, t: string, tp: str
     </section>
   );
 }
-// ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   return (
     <footer className="bg-[#040810] py-12 md:py-5 px-4 md:px-8 lg:px-16 border-t border-white/5 pb-24 lg:pb-12">
@@ -4885,7 +4884,7 @@ function Footer() {
             { title: "Location", links: [["Maximo Marina", "https://maps.google.com/?q=Maximo+Marina,+St+Petersburg,+FL"],["3701 50 Ave S.", null],["St. Petersburg, FL", null]] },
           ].map(({ title, links }) => (
             <div key={title}>
-              <h4 className="font-serif text-base mb-4">{title}</h4>
+              <h4 className="font-serif text-base mb-4 text-white">{title}</h4>
               <ul className="space-y-2.5">
                 {links.map(([label, href], i) => (
                   <li key={i}>
@@ -4894,18 +4893,13 @@ function Footer() {
                         href={href}
                         target={href.startsWith("http") ? "_blank" : undefined}
                         rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                        onClick={
-                          href.startsWith("tel:")
-                            ? (e) => { e.preventDefault(); window.location.href = href; }
-                            : undefined
-                        }
                         whileHover={{ x: 4, color: "#c9a227" }}
                         className="text-sm text-white/30 hover:text-[#c9a227] transition-all inline-block"
                       >
                         {label}
                       </motion.a>
                     ) : (
-                      <motion.span whileHover={{ x: 4, color: "#c9a227" }} className="text-sm text-white/30 transition-all inline-block">{label}</motion.span>
+                      <span className="text-sm text-white/30 inline-block">{label}</span>
                     )}
                   </li>
                 ))}
@@ -4925,7 +4919,6 @@ function Footer() {
     </footer>
   );
 }
-
 function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
