@@ -3829,21 +3829,14 @@ function PrivateSection() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <h2 className="text-3xl md:text-5xl font-serif leading-tight">
-              Celebrate Life's Most
-              <br />
-              <em className="text-gold italic font-serif">
-                Meaningful Moments
-              </em>
-            </h2>
-
-            <a
-              href="/book"
-              className="gold-shimmer-btn inline-flex items-center gap-2 px-6 py-3 bg-gold text-navy font-bold rounded-xl text-sm shadow-lg shadow-gold/20 whitespace-nowrap shrink-0"
-            >
-              Reserve Your Date <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </div>
+  <h2 className="text-3xl md:text-5xl font-serif leading-tight">
+    Celebrate Life's Most
+    <br />
+    <em className="text-gold italic font-serif">
+      Meaningful Moments
+    </em>
+  </h2>
+</div>
         </motion.div>
       </div>
 
@@ -4270,11 +4263,17 @@ function CorporateSection() {
   return (
     <section id="corporate" className="bg-navy">
       {/* ── Section Header ── */}
-      <div
-        ref={headerRef}
-        className="pt-6 pb-4 px-4 md:px-8 lg:px-16"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
-      >
+     {/* ── Section Header ── */}
+<div
+  ref={headerRef}
+  className="pt-6 pb-4 px-4 md:px-8 lg:px-16"
+  style={{
+    background:
+      "linear-gradient(135deg, rgba(6,14,30,0.98) 0%, rgba(8,22,44,0.98) 100%)",
+    borderTop: "none",
+    borderBottom: "none",
+  }}
+>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 30 }}
@@ -4290,19 +4289,12 @@ function CorporateSection() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <h2 className="text-3xl md:text-5xl font-serif leading-tight">
-              Corporate &amp; Executive
-              <br />
-              <em className="text-gold italic font-serif">Experiences</em>
-            </h2>
-
-            <a
-              href="/book"
-              className="gold-shimmer-btn inline-flex items-center gap-2 px-6 py-3 bg-gold text-navy font-bold rounded-xl text-sm shadow-lg shadow-gold/20 whitespace-nowrap shrink-0"
-            >
-              Book Your Event <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </div>
+  <h2 className="text-3xl md:text-5xl font-serif leading-tight">
+    Corporate &amp; Executive
+    <br />
+    <em className="text-gold italic font-serif">Experiences</em>
+  </h2>
+</div>
         </motion.div>
       </div>
 
@@ -4314,7 +4306,7 @@ function CorporateSection() {
           background:
             "linear-gradient(135deg, rgba(6,14,30,0.98) 0%, rgba(8,22,44,0.98) 100%)",
           borderTop: "1px solid rgba(255,255,255,0.05)",
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
+          borderBottom: "1px solid rgba(255, 255, 255, 0)",
         }}
       >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
