@@ -5022,10 +5022,10 @@ export default function App() {
         <WaterToysSection />
         <CulinarySection />
         <DestinationsSection />
-        <PricingSection />
         <MechanicalSection />
         <PrivateSection />
         <CorporateSection />
+        <PricingSection />
         <ReviewsSection />
         <InquirySection addToast={addToast} />
       </main>
